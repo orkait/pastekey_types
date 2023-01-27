@@ -1,54 +1,46 @@
-enum categoryEnum {
-	general = "general",
-	coding = "coding",
-	document = "document",
-	secret = "secret",
-	other = "other",
-}
+const categoryEnum = {
+	general: "general",
+	coding: "coding",
+	document: "document",
+	secret: "secret",
+	other: "other",
+} as const;
 
-enum statusEnum {
-	active = "active",
-	inactive = "inactive",
-	banned = "banned",
-	expired = "expired",
-	deleted = "deleted",
-}
+const statusEnum = {
+	active: "active",
+	inactive: "inactive",
+	banned: "banned",
+	expired: "expired",
+	deleted: "deleted",
+} as const;
 
-enum privacyEnum {
-	public = "public",
-	private = "private",
-	unlisted = "unlisted",
-}
+const privacyEnum = {
+	public: "public",
+	private: "private",
+	unlisted: "unlisted",
+} as const;
 
-enum adTypeEnum {
-	low = "low",
-	medium = "medium",
-	high = "high",
-}
+const adTypeEnum = {
+	low: "low",
+	medium: "medium",
+	high: "high",
+};
 
-export function enumToArray<T>(
-	enumObject: T extends Record<keyof T, string> ? T : never
-): (keyof T)[] {
-	return Object.keys(enumObject) as Array<keyof T>;
-}
-
-export function enumToArrayReadonly<T>(
+export function extractKeysReadonly<T>(
 	enumObject: T extends Record<keyof T, string> ? T : never
 ): ReadonlyArray<keyof T> {
 	return Object.keys(enumObject) as Array<keyof T>;
 }
 
-export const categoryArray = enumToArrayReadonly(categoryEnum);
-export const privacyArray = enumToArrayReadonly(privacyEnum);
-export const adTypeArray = enumToArrayReadonly(adTypeEnum);
-export const statusArray = enumToArrayReadonly(statusEnum);
+export const categoryArray = extractKeysReadonly(categoryEnum);
+export const privacyArray = extractKeysReadonly(privacyEnum);
+export const adTypeArray = extractKeysReadonly(adTypeEnum);
+export const statusArray = extractKeysReadonly(statusEnum);
 
 export type categoryType = typeof categoryArray[number];
 export type privacyType = typeof privacyArray[number];
 export type adType = typeof adTypeArray[number];
 export type statusType = typeof statusArray[number];
-
-export type NonEmptyArray<T> = [T, ...T[]];
 
 export type timeSpanType =
 	// minute
@@ -154,7 +146,6 @@ export const timeMap: {
 	"5 years": 60 * 60 * 24 * 365 * 5 * 1000,
 	"10 years": 60 * 60 * 24 * 365 * 10 * 1000,
 };
-
 
 export const timeAt = (timing: timeSpanType) => {
 	return timeMap[timing] + Date.now();
