@@ -1,5 +1,4 @@
-# Logger 
-basic types used in pastekey.io
+#  basic types used in pastekey.io
 
 
 ## Supports
