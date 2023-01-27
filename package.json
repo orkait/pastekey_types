@@ -1,0 +1,58 @@
+{
+	"name": "@orkait/pastekey_types",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/orkait/pastekey_types.git"
+	},
+	"version": "1.4.2",
+	"description": "custom logger for orkait",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"/dist"
+	],
+	"scripts": {
+		"lint": "eslint src --ext .ts",
+		"prepublishOnly": "npm run compile && np --no-cleanup --no-tests --no-publish",
+		"ts-types": "tsc --emitDeclarationOnly --outDir dist",
+		"build": "rimraf dist && etsc && npm run ts-types",
+		"test": "npm run lint && npm run build",
+		"compile": "npm run build",
+		"release": "np --no-yarn --no-tests --no-cleanup --no-publish",
+		"dev": "nodemon",
+		"start": "node dist/server.js"
+	},
+	"dependencies": {
+		"kleur": "^4.1.5",
+		"redis": "^4.5.1"
+	},
+	"keywords": [
+		"logger"
+	],
+	"engines": {
+		"node": "^12.17.0 || ^14.13 || >=16.0.0"
+	},
+	"author": "KailasMahavarkar",
+	"website": "KailasMahavarkar.netlify.com",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/orkait/pastekey_types/issues"
+	},
+	"homepage": "https://github.com/orkait/pastekey_types#readme",
+	"devDependencies": {
+		"@types/node": "^18.11.17",
+		"@typescript-eslint/eslint-plugin": "^5.47.0",
+		"@typescript-eslint/parser": "^5.47.0",
+		"esbuild": "^0.16.10",
+		"eslint": "^8.30.0",
+		"nodemon": "^2.0.20",
+		"typescript": "^4.9.4"
+	},
+	"np": {
+		"yarn": false
+	},
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org"
+	}
+}
