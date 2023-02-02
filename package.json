@@ -4,12 +4,12 @@
 		"type": "git",
 		"url": "git+https://github.com/orkait/pastekey_types.git"
 	},
-	"version": "1.2.2",
-	"description": "types for pastekey",
-	"main": "index.js",
-	"types": "types.ts",
+	"version": "1.2.0",
+	"description": "custom logger for orkait",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
 	"files": [
-		"./dist"
+		"/dist"
 	],
 	"scripts": {
 		"lint": "eslint src --ext .ts",
