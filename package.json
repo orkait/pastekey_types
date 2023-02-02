@@ -4,7 +4,7 @@
 		"type": "git",
 		"url": "git+https://github.com/orkait/pastekey_types.git"
 	},
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "types for pastekey",
 	"main": "index.js",
 	"types": "types.ts",
