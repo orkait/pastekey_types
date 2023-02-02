@@ -6,10 +6,10 @@
 	},
 	"version": "1.1.1",
 	"description": "custom logger for orkait",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
+	"main": "index.js",
+	"types": "types.ts",
 	"files": [
-		"/dist"
+		"/"
 	],
 	"scripts": {
 		"lint": "eslint src --ext .ts",
@@ -22,7 +22,10 @@
 		"dev": "nodemon",
 		"start": "node dist/server.js"
 	},
-	"dependencies": {},
+	"dependencies": {
+		"mongoose": "^6.9.0",
+		"ts-mongoose": "^0.0.24"
+	},
 	"keywords": [],
 	"engines": {
 		"node": "^12.17.0 || ^14.13 || >=16.0.0"
@@ -35,7 +38,7 @@
 	},
 	"homepage": "https://github.com/orkait/pastekey_types#readme",
 	"devDependencies": {
-		"@types/node": "^18.11.17",
+		"@types/node": "^18.11.18",
 		"@typescript-eslint/eslint-plugin": "^5.47.0",
 		"@typescript-eslint/parser": "^5.47.0",
 		"esbuild": "^0.16.10",
