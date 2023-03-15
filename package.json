@@ -23,7 +23,6 @@
 		"start": "node dist/server.js"
 	},
 	"dependencies": {
-		"mongoose": "^6.9.0",
 		"ts-mongoose": "^0.0.24"
 	},
 	"keywords": [],
