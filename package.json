@@ -12,7 +12,7 @@
 		"/dist"
 	],
 	"scripts": {
-		"lint": "eslint src --ext .ts",
+		"lint": "eslint ./src --ext .ts",
 		"prepublishOnly": "npm run compile && np --no-cleanup --no-tests --no-publish",
 		"ts-types": "tsc --emitDeclarationOnly --outDir dist",
 		"build": "etsc && npm run ts-types",
@@ -41,7 +41,8 @@
 		"@types/node": "^18.11.18",
 		"@typescript-eslint/eslint-plugin": "^5.47.0",
 		"@typescript-eslint/parser": "^5.47.0",
-		"esbuild": "^0.16.10",
+		"esbuild": "^0.16.17",
+		"esbuild-node-tsc": "^2.0.5",
 		"eslint": "^8.30.0",
 		"nodemon": "^2.0.20",
 		"typescript": "^4.9.4"
