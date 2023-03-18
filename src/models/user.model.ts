@@ -1,188 +1,115 @@
-import {
-	createSchema,
-	ExtractDoc,
-	ExtractProps,
-	Type,
-	typedModel,
-} from "ts-mongoose";
-
+import { Schema, model } from 'mongoose';
 // whenever schema is updated
 // check what is been shared with accessToken
 // we should not share payment info with accessToken
 // we should not share password info with accessToken
 
-const schemas = {
-	payment: createSchema(
-		{
-			paypal: Type.string({
-				required: false,
-				default: "",
-			}),
-			upi: Type.string({
-				required: false,
-				default: "",
-			}),
-			selected: Type.string({
-				required: true,
-				enum: ["paypal", "upi"],
-			}),
-		},
-		{
-			_id: false,
-		}
-	),
+export const userSchema = new Schema({
+    _id: {
+        type: String,
+        required: false,
+    },
+    username: {
+        type: String,
+        required: true,
+    },
 
-	// social schema
-	social: createSchema(
-		{
-			facebook: Type.string({
-				required: false,
-				default: "",
-			}),
-			twitter: Type.string({
-				required: false,
-				default: "",
-			}),
-			instagram: Type.string({
-				required: false,
-				default: "",
-			}),
-			website: Type.string({
-				required: false,
-				default: "",
-			}),
-		},
-		{
-			_id: false,
-		}
-	),
+    // profile
+    fullname: {
+        type: String,
+        required: false,
+    },
+    email: {
+        type: String,
+        required: true,
+    },
+    apikey: {
+        type: String,
+        required: true,
+        index: true,
+    },
+    resetToken: {
+        type: String,
+        required: false,
+    },
 
-	pasteCounterSchema: createSchema(
-		{
-			// create
-			pasteCreated: Type.number({ required: true }),
-			pasteCreatedToday: Type.number({ required: true }),
+    // password
+    password: {
+        type: String,
+        required: true,
+    },
+    role: {
+        type: String,
+        required: true,
+        enum: ["member", "admin"],
+    },
+    datejoined: {
+        type: Number,
+        required: true,
+    },
+    pastes: {
+        type: Array,
+        required: false,
+    },
 
-			// read
-			pasteRead: Type.number({ required: true }),
-			pasteReadToday: Type.number({ required: true }),
+    status: {
+        type: String,
+        required: true,
+        enum: ["active", "inactive", "banned", "deleted"],
+    },
 
-			// update
-			pasteUpdated: Type.number({ required: true }),
-			pasteUpdatedToday: Type.number({ required: true }),
-		},
-		{
-			_id: false,
-		}
-	),
+    paidViews: {
+        type: Number,
+        required: true,
+    },
+    unpaidViews: {
+        type: Number,
+        required: true,
+    },
+    paidEarnings: {
+        type: Number,
+        required: true,
+    },
+    unpaidEarnings: {
+        type: Number,
+        required: true,
+    },
 
-	fileCounterSchema: createSchema(
-		{
-			// create
-			fileCreated: Type.number({ required: true }),
-			fileCreatedToday: Type.number({ required: true }),
+    payment: {
+        type: Object,
+        required: false,
+        default: {
+            paypal: "",
+            upi: "",
+            selected: "upi",
+        },
+    },
 
-			// read
-			fileRead: Type.number({ required: true }),
-			fileReadToday: Type.number({ required: true }),
-		},
-		{
-			_id: false,
-		}
-	),
-};
+    socials: {
+        type: Object,
+        required: false,
+        default: {
+            facebook: "",
+            twitter: "",
+            instagram: "",
+        },
+    },
 
-const counterSchema = createSchema(
-	{
-		pasteCreated: Type.string({
-			required: true,
-		}),
-		pasteCreatedToday: Type.string({
-			required: true,
-		}),
-		pasteRead: Type.string({
-			required: true,
-		}),
-		pasteReadToday: Type.string({
-			required: true,
-		}),
-		pasteUpdated: Type.string({
-			required: true,
-		}),
-		pasteUpdatedToday: Type.string({
-			required: true,
-		}),
-	},
-	{
-		_id: false,
-	}
-);
+    // counter
+    pasteCounter: {
+        type: Object,
+        required: true,
+        default: {
+            pasteCreated: 0,
+            pasteCreatedToday: 0,
 
-export const userSchema = createSchema({
-	_id: Type.objectId({
-		auto: true,
-	}),
-	username: Type.string({ required: true }),
+            pasteRead: 0,
+            pasteReadToday: 0,
 
-	// profile
-	fullname: Type.string({ required: false }),
-	email: Type.string({ required: true }),
-	apikey: Type.string({ required: true, index: true }),
-	resetToken: Type.string({ required: false }),
+            pasteUpdated: 0,
+            pasteUpdatedToday: 0,
+        },
+    },
+})
 
-	// password
-	password: Type.string({ required: true }),
-	role: Type.string({ required: true, enum: ["member", "admin"] }),
-	datejoined: Type.number({ required: true }),
-	pastes: Type.array({ required: false }).of(
-		Type.string({ required: false })
-	),
-
-	status: Type.string({
-		required: true,
-		enum: ["active", "inactive", "banned", "deleted"],
-	}),
-
-	paidViews: Type.number({ required: true }),
-	unpaidViews: Type.number({ required: true }),
-	paidEarnings: Type.number({ required: true }),
-	unpaidEarnings: Type.number({ required: true }),
-
-	payment: Type.object({
-		required: false,
-		default: {
-			paypal: "",
-			upi: "",
-			selected: "upi",
-		},
-	}).of(schemas.payment),
-
-	socials: Type.object({
-		required: false,
-		default: {
-			facebook: "",
-			twitter: "",
-			instagram: "",
-		},
-	}).of(schemas.social),
-
-	// counter
-	pasteCounter: Type.object({
-		required: true,
-		default: {
-			pasteCreated: 0,
-			pasteCreatedToday: 0,
-
-			pasteRead: 0,
-			pasteReadToday: 0,
-
-			pasteUpdated: 0,
-			pasteUpdatedToday: 0,
-		},
-	}).of(counterSchema),
-});
-
-// create index for apikey
-export const UserModel = typedModel("User", userSchema);
-export type UserDoc = ExtractDoc<typeof userSchema>;
-export type UserProps = ExtractProps<typeof userSchema>;
+export const UserModel = model("User", userSchema);

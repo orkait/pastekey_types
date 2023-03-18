@@ -1,28 +1,6 @@
-import {
-    createSchema,
-    Type,
-    typedModel,
-    ExtractDoc,
-    ExtractProps,
-} from "ts-mongoose";
-
-
+import { Schema, model } from "mongoose";
 import { timingEnum } from "../timing";
 import { privacyArray, categoryArray, adTypeArray, statusArray } from "../default";
-
-export const countrySchema = createSchema({
-    ca: Type.number({ required: true }),
-    au: Type.number({ required: true }),
-    uk: Type.number({ required: true }),
-    us: Type.number({ required: true }),
-    in: Type.number({ required: true }),
-    id: Type.number({ required: true }),
-    np: Type.number({ required: true }),
-    pk: Type.number({ required: true }),
-    bd: Type.number({ required: true }),
-    fr: Type.number({ required: true }),
-    ww: Type.number({ required: true }),
-});
 
 export const countryDefault = {
     ca: 0,
@@ -38,90 +16,205 @@ export const countryDefault = {
     ww: 0,
 };
 
-export const pasteSchema = createSchema({
-    _id: Type.string({
+
+export interface PasteDocument extends Document {
+    _id: string;
+    title: string;
+    privacy: string;
+    owner: string;
+    category: string;
+    data: string[];
+    size: number;
+    maxviews: number;
+    note: string;
+    eseed: string;
+    vseed: string;
+    ect: string;
+    vct: string;
+    adtype: string;
+    expiry: string;
+    status: string;
+    createdAt: number;
+    updateAt: number;
+    expireAt: number;
+    country: object;
+    paidViews: number;
+    uniqueViews: number;
+    totalViews: number;
+    paidEarnings: number;
+    unpaidEarnings: number;
+    reportedCount: number;
+    reportedMap: object;
+    version: number;
+}
+
+
+// create schema mongoose >= 7.0.0
+const pasteSchema = new Schema<PasteDocument>({
+    _id: {
+        type: String,
         required: false,
-    }),
+    },
 
     // basic info
-    title: Type.string({ required: true, default: "Untitled" }),
-    privacy: Type.string({
+    title: {
+        type: String,
+        required: true,
+        default: "Untitled",
+    },
+    privacy: {
+        type: String,
         required: false,
         enum: privacyArray,
         default: "public",
-    }),
-    owner: Type.string({ required: true, default: "member" }),
-    category: Type.string({ enum: categoryArray }),
-    data: Type.array({ required: true, default: [] }).of(Type.string()),
-    size: Type.number({ required: true, default: 0 }),
-    maxviews: Type.number({ required: false, default: 100000000 }),
-    note: Type.string({ required: true, default: "add note" }),
+    },
+    owner: {
+        type: String,
+        required: true,
+        default: "member",
+    },
+    category: {
+        type: String,
+        enum: categoryArray,
+    },
+    data: {
+        type: [String],
+        required: true,
+        default: [],
+    },
+    size: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
+    maxviews: {
+        type: Number,
+        required: false,
+        default: 100000000,
+    },
+    note: {
+        type: String,
+        required: true,
+        default: "add note",
+    },
 
     // security
-    eseed: Type.string({ required: false, default: "" }),
-    vseed: Type.string({ required: false, default: "" }),
-    ect: Type.string({ required: false, default: "" }),
-    vct: Type.string({ required: false, default: "" }),
+    eseed: {
+        type: String,
+        required: false,
+        default: "",
+    },
+    vseed: {
+        type: String,
+        required: false,
+        default: "",
+    },
+    ect: {
+        type: String,
+        required: false,
+        default: "",
+    },
+    vct: {
+        type: String,
+        required: false,
+        default: "",
+    },
 
     // settings
-    adtype: Type.string({
+    adtype: {
+        type: String,
         required: false,
         enum: adTypeArray,
         default: "medium",
-    }),
-    expiry: Type.string({
+    },
+    expiry: {
+        type: String,
         required: false,
         enum: timingEnum,
         default: "5 years",
-    }),
-    status: Type.string({
+    },
+    status: {
+        type: String,
         required: true,
         enum: statusArray,
         default: "active",
-    }),
+    },
 
     // timestamps
-    createdAt: Type.number({
+    createdAt: {
+        type: Number,
         required: true,
         default: Date.now(),
-    }),
-    updateAt: Type.number({
+    },
+    updateAt: {
+        type: Number,
         required: true,
         default: Date.now(),
-    }),
-    expireAt: Type.number({
+    },
+    expireAt: {
+        type: Number,
         required: false,
         default: Date.now() + 157680000000,
-    }),
+    },
 
     // analytics
-    country: Type.object({
+    country: {
+        type: Object,
         required: false,
         default: countryDefault,
-    }).of(countrySchema),
+    },
 
     // views
-    paidViews: Type.number({ required: true, default: 0 }),
-    uniqueViews: Type.number({ required: true, default: 0 }),
-    totalViews: Type.number({ required: true, default: 0 }),
+    paidViews: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
+    uniqueViews: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
+    totalViews: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
 
     // earnings
-    paidEarnings: Type.number({ required: true, default: 0 }),
-    unpaidEarnings: Type.number({ required: true, default: 0 }),
+    paidEarnings: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
+    unpaidEarnings: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
 
     // reports
-    reportedCount: Type.number({ required: true, default: 0 }),
+    reportedCount: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
 
     // reportedMap
-    reportedMap: Type.object({ required: false, default: {} }).of(
-        Type.string()
-    ),
+    reportedMap: {
+        type: Object,
+        required: false,
+        default: {},
+    },
+
 
     // version
-    version: Type.number({ required: true, default: 1 }),
+    version: {
+        type: Number,
+        required: true,
+        default: 1,
+    },
 });
 
-export type PasteDocumentType = ExtractDoc<typeof pasteSchema>;
-export type PasteDoc = ExtractDoc<typeof pasteSchema>;
-export type PasteProps = ExtractProps<typeof pasteSchema>;
-export const PasteModel = typedModel("Paste", pasteSchema);
+// create model
+export const PasteModel = model<PasteDocument>("paste", pasteSchema);

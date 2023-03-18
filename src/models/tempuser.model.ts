@@ -1,32 +1,55 @@
-import {
-	createSchema,
-	ExtractDoc,
-	ExtractProps,
-	Type,
-	typedModel,
-} from "ts-mongoose";
+import { Schema, model } from 'mongoose';
 
-export const tempUserSchema = createSchema({
-	_id: Type.objectId({
-		auto: true,
-	}),
-	email: Type.string({ required: true }),
-	username: Type.string({ required: true }),
-	password: Type.string({ required: true }),
-	token: Type.string({ required: true }),
-	status: Type.string({
-		required: true,
-		enum: ["pending", "banned", "expired"],
-		default: "pending",
-	}),
-	attempts: Type.number({ required: true, default: 0 }),
+export const tempUserSchema = new Schema({
+    _id: {
+        type: String,
+        required: false,
+    },
+    email: {
+        type: String,
+        required: true,
+    },
+    username: {
+        type: String,
+        required: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
+    token: {
+        type: String,
+        required: true,
+    },
+    status: {
+        type: String,
+        required: true,
+        enum: ["pending", "banned", "expired"],
+        default: "pending",
+    },
+    attempts: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
 
-	// basic timestamps
-	createTS: Type.number({ required: true, default: Date.now() }),
-	expireTS: Type.number({ required: true, default: Date.now() }),
-	updateTS: Type.number({ required: true, default: Date.now() }),
+    // basic timestamps
+    createTS: {
+        type: Number,
+        required: true,
+        default: Date.now(),
+    },
+    expireTS: {
+        type: Number,
+        required: true,
+        default: Date.now(),
+    },
+    updateTS: {
+        type: Number,
+        required: true,
+        default: Date.now(),
+    },
 });
 
-export const TempUserModel = typedModel("Temp", tempUserSchema);
-export type TempUserDoc = ExtractDoc<typeof tempUserSchema>;
-export type TempUserProps = ExtractProps<typeof tempUserSchema>;
+export const TempUser = model('tempUser', tempUserSchema);
+
